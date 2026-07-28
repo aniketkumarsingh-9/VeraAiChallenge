@@ -69,7 +69,7 @@ python -m app
 python -m pytest
 ```
 
-### 5. Running the LLM Judge Harness
+### 5. Running the Judge Harness
 ```bash
 python magicpin-ai-challenge/judge_simulator.py
 ```
