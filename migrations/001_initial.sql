@@ -1,0 +1,145 @@
+CREATE TABLE IF NOT EXISTS merchants (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    context_id TEXT NOT NULL UNIQUE,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS customers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    context_id TEXT NOT NULL UNIQUE,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    context_id TEXT NOT NULL UNIQUE,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS triggers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    context_id TEXT NOT NULL UNIQUE,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS offers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    context_id TEXT NOT NULL UNIQUE,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS campaigns (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    context_id TEXT NOT NULL UNIQUE,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS context_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    scope TEXT NOT NULL,
+    context_id TEXT NOT NULL,
+    version INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    delivered_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS suppression_keys (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    merchant_id TEXT NOT NULL,
+    suppression_key TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (merchant_id, suppression_key)
+);
+
+CREATE TABLE IF NOT EXISTS conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id TEXT NOT NULL UNIQUE,
+    merchant_id TEXT,
+    customer_id TEXT,
+    state TEXT NOT NULL,
+    turn_number INTEGER NOT NULL,
+    completed_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS conversation_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id INTEGER NOT NULL,
+    turn_number INTEGER NOT NULL,
+    from_role TEXT NOT NULL,
+    message TEXT NOT NULL,
+    action TEXT NOT NULL,
+    response_body TEXT NOT NULL,
+    state_after TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    merchant_id TEXT NOT NULL,
+    trigger_id TEXT NOT NULL,
+    conversation_id TEXT,
+    body TEXT NOT NULL,
+    cta TEXT NOT NULL,
+    send_as TEXT NOT NULL,
+    rationale TEXT NOT NULL,
+    suppression_key TEXT NOT NULL,
+    score INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS decision_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    merchant_id TEXT NOT NULL,
+    trigger_id TEXT NOT NULL,
+    decision TEXT NOT NULL,
+    score INTEGER NOT NULL DEFAULT 0,
+    rationale TEXT NOT NULL,
+    traces_json TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS rule_execution_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    decision_log_id INTEGER NOT NULL,
+    rule_name TEXT NOT NULL,
+    score_delta INTEGER NOT NULL DEFAULT 0,
+    rationale TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(decision_log_id) REFERENCES decision_logs(id) ON DELETE CASCADE
+);

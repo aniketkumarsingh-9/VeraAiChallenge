@@ -1,0 +1,22 @@
+﻿Total lines: 30
+  [OK] T01 cta=open_ended send_as=vera: Mylari South Indian Cafe, following up on your corporate bulk thali package plan
+  [OK] T02 cta=open_ended send_as=vera: Zen Yoga Studio, following up on your kids yoga summer camp planning. Want me to
+  [OK] T03 cta=multi_choice_slot send_as=merchant_on_behalf: Hi Aditya, Karim's Salon here. It has been a while since your last visit ù your 
+  [OK] T04 cta=multi_choice_slot send_as=merchant_on_behalf: Hi Riya, Beauty Lounge by Renu here. It has been a while since your last visit ù
+  [OK] T05 cta=open_ended send_as=vera: Apollo Health Plus Pharmacy, seasonal trend alert: seasonal demand shift. Want m
+  [OK] T06 cta=open_ended send_as=vera: Dr. Meera's Dental Clinic, there's a Dentists webinar opportunity for you (2 CPD
+  [OK] T07 cta=multi_choice_slot send_as=merchant_on_behalf: Hi Mr. Sharma, Apollo Health Plus Pharmacy here. It has been a while since your 
+.\.venv\Scripts\python : Traceback (most recent call last):
+At line:1 char:1
++ .\.venv\Scripts\python verify_submission.py 2>&1 | Out-File -Encoding ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "D:\magicpinChallenge\verify_submission.py", line 17, in <module>
+    print(f"  [{status}] {tid} cta={cta} send_as={send_as}: {body[:80]}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f9b7' in position 106: character maps to <undefined>
