@@ -1,9 +1,0 @@
-﻿
-[95m[1m======================================================================[0m
-[95m[1m                  magicpin AI Challenge ù LLM Judge                   [0m
-[95m[1m======================================================================[0m
-
-[94m[INFO][0m LLM Provider: Gemini (gemini-1.5-flash)
-[94m[INFO][0m Testing LLM connection...
-[91m[FAIL][0m LLM connection failed: HTTP Error 404: Not Found
-[94m[INFO][0m Check your API key and internet connection
